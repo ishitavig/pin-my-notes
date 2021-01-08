@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 import { Button, Paper, TextField, Typography } from '@material-ui/core';  
 import './MainPage.scss'
+import axios from 'axios';
 
 const NoteForm = (props) => {
     const [heading, setHeading] = useState('');
     const [body, setBody] = useState('');
+
+    const handleNoteCreate = async () => {
+        props.saveNote({heading: heading, body: body}); 
+        // Send POST request to 'books/create' endpoint
+        console.log(heading,body,'data')
+        await axios
+          .post('http://localhost:5000/notes/create', {
+            heading: heading,
+            body: body
+          })
+          .then(res => {
+            console.log(res.data);
+            setHeading(''); 
+            setBody('');
+          })
+          .catch(error => console.error(`There was an error creating the ${heading} note: ${error}`))
+      }
 
     return (
         <Paper className='container-paper'>
@@ -45,11 +63,7 @@ const NoteForm = (props) => {
                         variant='contained' 
                         color='secondary' 
                         style={{margin:30}} 
-                        onClick={() => {
-                            props.saveNote({heading: heading, body: body}); 
-                            setHeading(''); 
-                            setBody('');
-                        }}>
+                        onClick={async () => await handleNoteCreate()}>
                         Save
                     </Button>
                 </div>
