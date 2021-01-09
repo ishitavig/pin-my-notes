@@ -17,12 +17,28 @@ exports.notesAll = async (req, res) => {
     })
 }
 
+exports.userNotes = async (req, res) => {
+  // Get all notes from database
+  knex
+    .select('*') // select all records
+    .from('notes') // from 'notes' table
+    .where({userId: req.params.userId})
+    .then(notesData => {
+      // Send notes extracted from database in response
+      res.json(notesData)
+    })
+    .catch(err => {
+      // Send a error message in response
+      res.json({ message: `There was an error retrieving notes: ${err}` })
+    })
+}
+
 // Create new note
 exports.notesCreate = async (req, res) => {
   // Add new note to database
   knex('notes')
     .insert({ // insert new record, a note
-      'userId': req.body.userId,
+      'userId': req.params.userId,
       'heading': req.body.heading,
       'body': req.body.body,
     })

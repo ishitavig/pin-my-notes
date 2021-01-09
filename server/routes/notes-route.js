@@ -12,10 +12,15 @@ const router = express.Router()
 // this means that '/all' translates to '/notes/all'
 router.get('/all', notesRoutes.notesAll)
 
+// Add route for GET request to retrieve all notes
+// In server.js, notes route is specified as '/notes'
+// this means that '/all' translates to '/notes/all'
+router.get('/:userId', notesRoutes.userNotes)
+
 // Add route for POST request to create new note
 // In server.js, notes route is specified as '/notes'
 // this means that '/create' translates to '/notes/create'
-router.post('/create', notesRoutes.notesCreate)
+router.post('/create/:userId', notesRoutes.notesCreate)
 
 // Add route for PUT request to delete specific note
 // In server.js, notes route is specified as '/notes'

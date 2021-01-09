@@ -1,10 +1,17 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Header from './Header';
 import { Button } from '@material-ui/core';
 import './MainPage.scss';
 
 const Home = (props) => {
+    useEffect(() => {
+        if(props.user && Object.keys(props.user.user).length !== 0 && props.user.constructor === Object) {
+            props.history.push('/notes')
+        }
+    },[props.user])
+
     return (
         <div className='main-container'>
             <Header />
@@ -33,4 +40,14 @@ const Home = (props) => {
     )
 }
 
-export default withRouter(Home);
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Home));

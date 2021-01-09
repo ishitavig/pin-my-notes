@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser } from '../redux-store/actions/users-action';
@@ -19,10 +19,13 @@ const Login = (props) => {
             password: password
           })
           .then(res => {
-            console.log(res.data[0],'data')
-            res.data && props.setUser(res.data[0])
-            setEmail(''); 
-            setPassword('');
+            if(res.data && res.data.token) {
+                res.data && props.setUser(res.data)
+                localStorage.setItem('user', res.data.token)
+                props.history.push('/notes')
+                setEmail(''); 
+                setPassword('');
+            }
           })
           .catch(error => console.error(`There was an error logging in user ${email} note: ${error}`))
       }
@@ -52,6 +55,15 @@ const Login = (props) => {
                 </div>
             </div>
             <div className='row' style={{margin:'auto',display: 'flex',justifyContent: 'center',marginTop:20}}>
+                <div className='col-6'>
+                    <Button 
+                        variant='outlined' 
+                        color='secondary' 
+                        style={{margin:10}} 
+                        onClick={() => props.history.push('/registration')}>
+                        Not a member? Sign Up
+                    </Button>
+                </div>
                 <div className='col-4'>
                     <Button 
                         variant='contained' 
@@ -60,15 +72,6 @@ const Login = (props) => {
                         onClick={() => handleLogin()}
                     >
                         Sign In
-                    </Button>
-                </div>
-                <div className='col-6'>
-                    <Button 
-                        variant='outlined' 
-                        color='secondary' 
-                        style={{margin:10}} 
-                        onClick={() => props.history.push('/registration')}>
-                        Not a member? Sign Up
                     </Button>
                 </div>
             </div>

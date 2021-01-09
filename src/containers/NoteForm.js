@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Button, Paper, TextField, Typography } from '@material-ui/core';  
 import './MainPage.scss'
 import axios from 'axios';
@@ -11,12 +13,11 @@ const NoteForm = (props) => {
         props.saveNote({heading: heading, body: body}); 
         // Send POST request to 'notes/create' endpoint
         await axios
-          .post('http://localhost:5000/notes/create', {
+          .post(`http://localhost:5000/notes/create/${props.user ? props.user.userId : ''}`, {
             heading: heading,
             body: body
           })
           .then(res => {
-            console.log(res,'/notes/create result')
             setHeading(''); 
             setBody('');
           })
@@ -71,4 +72,14 @@ const NoteForm = (props) => {
     )
 }
 
-export default NoteForm;
+const mapStateToProps = state => {
+    return {
+        user: state.user && state.user.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(NoteForm));

@@ -19,7 +19,6 @@ const Registration = (props) => {
             password: password
           })
           .then(res => {
-            console.log(res.data);
             setName('');
             setEmail(''); 
             setPassword('');
@@ -62,6 +61,15 @@ const Registration = (props) => {
                 </div>
             </div>
             <div className='row' style={{margin:'auto',display: 'flex',justifyContent: 'center',marginTop:20}}>
+                <div className='col-6'>
+                    <Button 
+                        variant='outlined' 
+                        color='secondary' 
+                        style={{margin:10}} 
+                        onClick={() => props.history.push('/login')}>
+                        Already a member? Sign In
+                    </Button>
+                </div>
                 <div className='col-4'>
                     <Button 
                         variant='contained' 
@@ -70,15 +78,6 @@ const Registration = (props) => {
                         onClick={() => handleCreateUser()}
                     >
                         Sign Up
-                    </Button>
-                </div>
-                <div className='col-6'>
-                    <Button 
-                        variant='outlined' 
-                        color='secondary' 
-                        style={{margin:10}} 
-                        onClick={() => props.history.push('/login')}>
-                        Already a member? Sign In
                     </Button>
                 </div>
             </div>

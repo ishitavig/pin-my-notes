@@ -1,5 +1,6 @@
 // Import database
 const knex = require('./../db')
+const jwt = require('jsonwebtoken');
 
 // Retrieve all users
 exports.usersAll = async (req, res) => {
@@ -26,7 +27,8 @@ exports.login = async (req, res) => {
       .where({email: req.body.email, password: req.body.password})
       .then(userData => {
         // Send users extracted from database in response
-        res.json(userData)
+        const token = jwt.sign({ data: userData }, 'secretcode');
+        res.json({...userData[0], token: token})
       })
       .catch(err => {
         // Send a error message in response
