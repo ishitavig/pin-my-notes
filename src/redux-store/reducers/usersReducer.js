@@ -1,0 +1,19 @@
+import { SET_USER } from '../actions/actionTypes';
+
+const initialState = {
+  user: {}
+};
+
+export default function(state = initialState, action) {
+  switch (action.type) {
+    case SET_USER: {
+      console.log(action.payload,'payload')
+      return {
+        ...state,
+        user: action.payload
+      };
+    }
+    default:
+      return state;
+  }
+}

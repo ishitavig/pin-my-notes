@@ -9,19 +9,18 @@ const NoteForm = (props) => {
 
     const handleNoteCreate = async () => {
         props.saveNote({heading: heading, body: body}); 
-        // Send POST request to 'books/create' endpoint
-        console.log(heading,body,'data')
+        // Send POST request to 'notes/create' endpoint
         await axios
           .post('http://localhost:5000/notes/create', {
             heading: heading,
             body: body
           })
           .then(res => {
-            console.log(res.data);
+            console.log(res,'/notes/create result')
             setHeading(''); 
             setBody('');
           })
-          .catch(error => console.error(`There was an error creating the ${heading} note: ${error}`))
+          .catch(error => console.error(`There was an error creating the note ${heading} with error: ${error}`))
       }
 
     return (
@@ -50,7 +49,7 @@ const NoteForm = (props) => {
                 <div className='col-6' style={{margin:'auto'}}>
                     <Button 
                         variant='outlined' 
-                        color='primary' 
+                        color='secondary' 
                         style={{margin:30}}
                         onClick={() => {
                             setHeading(''); 

@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import './MainPage.scss';
-import { Card, Paper, Typography } from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import Header from './Header';
 import NoteForm from './NoteForm';
 import NoteCard from './NoteCard';
 import axios from 'axios';
 
 const MainPage = () => {
     const [notes, setNotes] = useState([]);
+    
     useEffect(() => {
         const fetchNotes = async () => {
             axios
@@ -25,9 +24,7 @@ const MainPage = () => {
 
     return (
         <div className='main-container'>
-            <Typography variant='h2' style={{color:'lightskyblue',margin:20}}>
-            <FontAwesomeIcon icon={faThumbtack}/> Pin My Notes
-            </Typography>
+            <Header />
             <NoteForm saveNote={(data) => setNotes([...notes,data])}/>
             <div className='row' style={{margin:50}}>
             {notes.map(note => (

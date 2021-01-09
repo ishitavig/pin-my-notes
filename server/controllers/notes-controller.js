@@ -1,65 +1,63 @@
 // Import database
 const knex = require('./../db')
 
-// Retrieve all books
+// Retrieve all notes
 exports.notesAll = async (req, res) => {
-    console.log('requested')
-  // Get all books from database
+  // Get all notes from database
   knex
     .select('*') // select all records
-    .from('notes') // from 'books' table
-    .then(userData => {
-      // Send books extracted from database in response
-      console.log(userData,'data')
-      res.json(userData)
+    .from('notes') // from 'notes' table
+    .then(notesData => {
+      // Send notes extracted from database in response
+      res.json(notesData)
     })
     .catch(err => {
       // Send a error message in response
-      res.json({ message: `There was an error retrieving books: ${err}` })
+      res.json({ message: `There was an error retrieving notes: ${err}` })
     })
 }
 
-// Create new book
+// Create new note
 exports.notesCreate = async (req, res) => {
-  // Add new book to database
-  console.log(req.body,'body')
+  // Add new note to database
   knex('notes')
-    .insert({ // insert new record, a book
+    .insert({ // insert new record, a note
+      'userId': req.body.userId,
       'heading': req.body.heading,
       'body': req.body.body,
     })
     .then(() => {
       // Send a success message in response
-      res.json({ message: `Note \'Heading: ${req.body.heading}\' , Body: ${req.body.body}.` })
+      res.json({ userId: req.body.userId, note: `Heading: ${req.body.heading}, Body: ${req.body.body}` })
     })
     .catch(err => {
       // Send a error message in response
-      res.json({ message: `There was an error creating ${req.body.heading} book: ${err}` })
+      res.json({ message: `There was an error creating note: ${req.body.heading} with error: ${err}` })
     })
 }
 
-// Remove specific book
+// Remove specific note
 exports.notesDelete = async (req, res) => {
-  // Find specific book in the database and remove it
+  // Find specific note in the database and remove it
   knex('notes')
-    .where('id', req.body.id) // find correct record based on id
+    .where('noteId', req.body.noteId) // find correct record based on noteId
     .del() // delete the record
     .then(() => {
       // Send a success message in response
-      res.json({ message: `Note ${req.body.id} deleted.` })
+      res.json({ message: `Note ${req.body.noteId} deleted.` })
     })
     .catch(err => {
       // Send a error message in response
-      res.json({ message: `There was an error deleting ${req.body.id} note: ${err}` })
+      res.json({ message: `There was an error deleting note: ${req.body.noteId} with error: ${err}` })
     })
 }
 
-// Remove all books on the list
+// Remove all notes on the list
 exports.notesReset = async (req, res) => {
-  // Remove all books from database
+  // Remove all notes from database
   knex
     .select('*') // select all records
-    .from('notes') // from 'books' table
+    .from('notes') // from 'notes' table
     .truncate() // remove the selection
     .then(() => {
       // Send a success message in response
@@ -67,6 +65,6 @@ exports.notesReset = async (req, res) => {
     })
     .catch(err => {
       // Send a error message in response
-      res.json({ message: `There was an error resetting book list: ${err}.` })
+      res.json({ message: `There was an error resetting notes list: ${err}.` })
     })
 }
